@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="on">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%m%n"/>
+        </Console>
+
+        <RandomAccessFile name="sysRAF" fileName="../logs/sys.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+        </RandomAccessFile>
+        <Async name="sysAsync">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="sysRAF"/>
+        </Async>
+        <RandomAccessFile name="bizRAF" fileName="../logs/biz.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+        </RandomAccessFile>
+        <Async name="bizAsync">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="bizRAF"/>
+        </Async>
+        <RandomAccessFile name="taskRAF" fileName="../logs/task.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+        </RandomAccessFile>
+        <Async name="taskAsync">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="taskRAF"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="bizLog" level="debug" additivity="false">
+            <AppenderRef ref="bizAsync"/>
+        </Logger>
+        <Logger name="sysLog" level="debug" additivity="false">
+            <AppenderRef ref="sysAsync"/>
+        </Logger>
+        <Logger name="taskLog" level="debug" additivity="false">
+            <AppenderRef ref="taskAsync"/>
+        </Logger>
+
+
+        <Logger name="org.springframework.amqp.rabbit.listener.BlockingQueueConsumer" level="info">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!--<Logger name="org.springframework.web.context.support.StandardServletEnvironment" level="info"
+                additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>-->
+
+
+
+        <!--
+        <Logger name="java.sql.ResultSet" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="java.sql.Connection" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="java.sql.Statement" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="java.sql.PreparedStatement" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Logger name="com.ibatis.common.jdbc.SimpleDataSource" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.ibatis.common.jdbc.ScriptRunner" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="info">
+          <AppenderRef ref="Console"/>
+        </Logger>
+        -->
+    </Loggers>
+</Configuration>

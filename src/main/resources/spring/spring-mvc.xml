@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--默认全部需要登录身份-->
+            <mvc:mapping path="/**"/>
+
+            <mvc:exclude-mapping path="/user/register"/>
+
+            <bean class="com.hzszn.loanappsrv.interceptor.HeaderInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <mvc:cors>
+        <mvc:mapping path="/**"/>
+    </mvc:cors>
+
+</beans>

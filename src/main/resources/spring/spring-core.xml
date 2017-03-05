@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <context:component-scan base-package="com.hzszn.loanappsrv"/>
+    <context:annotation-config/>
+    <aop:aspectj-autoproxy/>
+    <tx:annotation-driven/>
+
+    <bean id="sysPropertyLoader" class="com.hzszn.loanappsrv.init.SysPropertyLoader">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:prop/*_config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.druid.driver-class}"/>
+        <property name="url" value="${jdbc.druid.driver-url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="initialSize" value="${jdbc.druid.connection-initial-size}"/>
+        <property name="minIdle" value="${jdbc.druid.connection-minimum-size}"/>
+        <property name="maxActive" value="${jdbc.druid.connection-maximum-size}"/>
+        <property name="maxWait" value="${jdbc.druid.connection-maxwait-time}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.druid.connection-maxactive-time}"/>
+        <property name="minEvictableIdleTimeMillis" value="${jdbc.druid.connection-minlive-time}"/>
+        <property name="validationQuery" value="${jdbc.druid.connection-test-sql}"/>
+        <property name="testWhileIdle" value="${jdbc.druid.test-while-idle}"/>
+        <property name="testOnBorrow" value="${jdbc.druid.test-on-borrow}"/>
+        <property name="testOnReturn" value="${jdbc.druid.test-on-return}"/>
+        <property name="poolPreparedStatements" value="${jdbc.druid.pool-prepared-statements}"/>
+        <property name="connectionProperties" value="config.decrypt=${jdbc.druid.config.decrypt}"/>
+        <property name="filters" value="mergeStat,config"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hzszn.loanappsrv.orm.facade"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--  配置事务管理器  -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="nestedTransactionAllowed" value="true"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" rollback-for="UnexpectedRollbackException"/>
+            <tx:method name="select*" read-only="true" rollback-for="UnexpectedRollbackException"/>
+            <tx:method name="*_tx" rollback-for="Exception" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointCut" expression="execution(* com.hzszn.*..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+    </aop:config>
+
+</beans>
