@@ -28,7 +28,6 @@ public class UserController extends BaseApiContorller
     public JsonResponse info(@RequestParam int id) throws Exception
     {
         User user = userService.findUserById(id);
-        System.out.print(user.getUserName());
         return JsonResponseTool.success(user);
     }
 
