@@ -10,5 +10,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface ResService
 {
-    ServiceResult uploadImage(MultipartFile[] file, Integer checkId);
+    ServiceResult uploadImage(MultipartFile[] file, Integer userId);
 }

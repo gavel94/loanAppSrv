@@ -30,22 +30,22 @@ public class FileTool implements ApplicationContextAware
      * @return
      * @throws IOException
      */
-//    public static String saveFileSyncTmp(String type, Integer userId, MultipartFile multipartFile) throws IOException {
+    public static String saveFileSyncTmp(String type, Integer userId, MultipartFile multipartFile) throws IOException {
 //        TSysProperty tSysProperty = SysPropertyTool.getProperty(SysPropertyTypeEnum.FILE_BUSINESS_TYPE, type);
-//        //验证允许上传的业务类型 或者 文件是否为空
-//        if (null == multipartFile || multipartFile.isEmpty())
-//        {
-//            return "err:上传的文件为空";
-//        }
+        //验证允许上传的业务类型 或者 文件是否为空
+        if (null == multipartFile || multipartFile.isEmpty())
+        {
+            return "err:上传的文件为空";
+        }
 //        if (null == tSysProperty)
 //        {
 //            return "err:不支持的业务类型";
 //        }
-//
-//        long curTime = System.currentTimeMillis();
-//        String fileName = type + "_" + userId + "_" + curTime;      //文件名规则
-//
-//        //验证业务类型对应的文件类型
+
+        long curTime = System.currentTimeMillis();
+        String fileName = type + "_" + userId + "_" + curTime;      //文件名规则
+
+        //验证业务类型对应的文件类型
 //        if (null != multipartFile && !multipartFile.isEmpty())
 //        {
 //            String endfix = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().indexOf(".") + 1, multipartFile.getOriginalFilename().length());
@@ -56,30 +56,30 @@ public class FileTool implements ApplicationContextAware
 //
 //            fileName += "." + endfix;
 //        }
-//
-//        //保存到临时目录
-//        String path = FILE_PATH + "/temp/" + type + "/" + userId + "/";
-//        File dirTmp = new File(path);
-//        if (!dirTmp.exists())
-//        {
-//            dirTmp.mkdirs();
-//        }
-//        File fileTmp = new File(path + fileName);
-//        if (fileTmp.exists())
-//        {
+
+        //保存到临时目录
+        String path = FILE_PATH + "/temp/" + type + "/" + userId + "/";
+        File dirTmp = new File(path);
+        if (!dirTmp.exists())
+        {
+            dirTmp.mkdirs();
+        }
+        File fileTmp = new File(path + fileName);
+        if (fileTmp.exists())
+        {
+            fileTmp.delete();
+        }
+        fileTmp.createNewFile();
+        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), fileTmp);
+
+        //定时删除
+//        taskScheduler.schedule(() -> {
 //            fileTmp.delete();
-//        }
-//        fileTmp.createNewFile();
-//        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), fileTmp);
-//
-//        //定时删除
-////        taskScheduler.schedule(() -> {
-////            fileTmp.delete();
-////        }, new Date(curTime + Long.decode(SysPropertyTool.getProperty(SysPropertyTypeEnum.SYS, KeyEnum.SYS_TMP_DEL_TIMER_KEY).getPropertyValue()) * 3600 * 1000));
-//
-//
-//        return fileName;
-//    }
+//        }, new Date(curTime + Long.decode(SysPropertyTool.getProperty(SysPropertyTypeEnum.SYS, KeyEnum.SYS_TMP_DEL_TIMER_KEY).getPropertyValue()) * 3600 * 1000));
+
+
+        return fileName;
+    }
 
     /**
      * 保存文件
@@ -205,21 +205,21 @@ public class FileTool implements ApplicationContextAware
      * @return
      * @throws IOException
      */
-//    public static String saveFileSyncTmpAvatar(String type, Integer userId, MultipartFile multipartFile, String fileName) throws IOException {
+    public static String saveFileSyncTmpAvatar(String type, Integer userId, MultipartFile multipartFile, String fileName) throws IOException {
 //        TSysProperty tSysProperty = SysPropertyTool.getProperty(SysPropertyTypeEnum.FILE_BUSINESS_TYPE, type);
-//        //验证允许上传的业务类型 或者 文件是否为空
-//        if (null == multipartFile || multipartFile.isEmpty()) {
-//            return "err:上传的文件为空";
-//        }
+        //验证允许上传的业务类型 或者 文件是否为空
+        if (null == multipartFile || multipartFile.isEmpty()) {
+            return "err:上传的文件为空";
+        }
 //        if (null == tSysProperty) {
 //            return "err:不支持的业务类型";
 //        }
-//
-//        long curTime = System.currentTimeMillis();
-//        if (StringUtils.isBlank(fileName)) {
-//            fileName = type + "_" + userId + "_" + curTime;//文件名规则
-//        }
-//        //验证业务类型对应的文件类型
+
+        long curTime = System.currentTimeMillis();
+        if (StringUtils.isBlank(fileName)) {
+            fileName = type + "_" + userId + "_" + curTime;//文件名规则
+        }
+        //验证业务类型对应的文件类型
 //        if (null != multipartFile && !multipartFile.isEmpty()) {
 //            String endfix = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().indexOf(".") + 1, multipartFile.getOriginalFilename().length());
 //            if (0 > tSysProperty.getPropertyValue().indexOf(endfix)) {
@@ -229,28 +229,28 @@ public class FileTool implements ApplicationContextAware
 //                fileName += "." + endfix;
 //            }
 //        }
-//
-//        //保存到临时目录
-//        String path = FILE_PATH + "/temp/" + type + "/" + userId + "/";
-//        File dirTmp = new File(path);
-//        if (!dirTmp.exists()) {
-//            dirTmp.mkdirs();
-//        }
-//        File fileTmp = new File(path + fileName);
-//        if (fileTmp.exists()) {
+
+        //保存到临时目录
+        String path = FILE_PATH + "/temp/" + type + "/" + userId + "/";
+        File dirTmp = new File(path);
+        if (!dirTmp.exists()) {
+            dirTmp.mkdirs();
+        }
+        File fileTmp = new File(path + fileName);
+        if (fileTmp.exists()) {
+            fileTmp.delete();
+        }
+        fileTmp.createNewFile();
+        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), fileTmp);
+
+//        //定时删除
+//        taskScheduler.schedule(() -> {
 //            fileTmp.delete();
-//        }
-//        fileTmp.createNewFile();
-//        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), fileTmp);
-//
-////        //定时删除
-////        taskScheduler.schedule(() -> {
-////            fileTmp.delete();
-////        }, new Date(curTime + Long.decode(SysPropertyTool.getProperty(SysPropertyTypeEnum.SYS, KeyEnum.SYS_TMP_DEL_TIMER_KEY).getPropertyValue()) * 3600 * 1000));
-//
-//
-//        return fileName;
-//    }
+//        }, new Date(curTime + Long.decode(SysPropertyTool.getProperty(SysPropertyTypeEnum.SYS, KeyEnum.SYS_TMP_DEL_TIMER_KEY).getPropertyValue()) * 3600 * 1000));
+
+
+        return fileName;
+    }
 
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException

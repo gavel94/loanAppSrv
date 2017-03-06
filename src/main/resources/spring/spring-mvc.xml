@@ -10,7 +10,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <!--默认全部需要登录身份-->
-            <mvc:mapping path="/**"/>
+            <mvc:mapping path="/user/**"/>
 
             <mvc:exclude-mapping path="/user/register"/>
 
