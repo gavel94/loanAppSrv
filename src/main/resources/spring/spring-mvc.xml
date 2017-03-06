@@ -14,6 +14,8 @@
 
             <mvc:exclude-mapping path="/user/register"/>
 
+            <mvc:exclude-mapping path="/user/info"/>
+
             <bean class="com.hzszn.loanappsrv.interceptor.HeaderInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

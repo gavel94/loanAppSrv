@@ -3,6 +3,7 @@ package com.hzszn.loanappsrv.controller;
 import com.hzszn.loanappsrv.base.BaseApiContorller;
 import com.hzszn.loanappsrv.model.JsonResponse;
 import com.hzszn.loanappsrv.orm.pojo.User;
+import com.hzszn.loanappsrv.service.dto.UserDTO;
 import com.hzszn.loanappsrv.service.facade.UserService;
 import com.hzszn.loanappsrv.utils.JsonResponseTool;
 import com.hzszn.loanappsrv.utils.ProtocolTool;
@@ -28,7 +29,12 @@ public class UserController extends BaseApiContorller
     public JsonResponse info(@RequestParam int id) throws Exception
     {
         User user = userService.findUserById(id);
-        return JsonResponseTool.success(user);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserName(user.getUserName());
+        userDTO.setSex(user.getSex());
+        userDTO.setAge(user.getAge());
+        System.out.println(userDTO);
+        return JsonResponseTool.success(userDTO);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)

@@ -37,6 +37,7 @@
         <xmlbeans.version>2.3.0</xmlbeans.version>
         <dom4j.version>1.6.1</dom4j.version>
         <jsonwebtoken.version>0.7.0</jsonwebtoken.version>
+        <lombok.version>1.16.14</lombok.version>
     </properties>
 
     <dependencies>
@@ -276,6 +277,12 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jsonwebtoken.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
 
     </dependencies>
